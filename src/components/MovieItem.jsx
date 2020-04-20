@@ -2,7 +2,7 @@ import React from "react";
 
 class MovieItem extends React.Component {
   state = {
-    willWatch: false
+    willWatch: false,
   };
 
   render() {
@@ -10,15 +10,16 @@ class MovieItem extends React.Component {
       movie,
       handleDeleteMovie,
       addMovieToWillWatch,
-      removeMovieFromWillWatch
+      removeMovieFromWillWatch,
     } = this.props;
 
     return (
       <div className="card">
         <img
           className="card-img-top"
-          src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path ||
-            movie.poster_path}`}
+          src={`https://image.tmdb.org/t/p/w500${
+            movie.backdrop_path || movie.poster_path
+          }`}
           alt=""
         />
         <div className="card-body">

@@ -1,11 +1,11 @@
 import React from "react";
 
-const MovieTabs = props => {
+const MovieTabs = (props) => {
   const { sort_by, updateSortBy } = props;
-  const handleClick = value => () => {
+  const handleClick = (value) => () => {
     updateSortBy(value);
   };
-  const getClassLink = value => {
+  const getClassLink = (value) => {
     return `nav-link ${sort_by === value ? "active" : null}`;
   };
 
