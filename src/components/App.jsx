@@ -1,6 +1,7 @@
 import React from "react";
 import MovieItem from "./MovieItem";
 import MovieTabs from "./MovieTabs";
+import Pagination from "./Pagination";
 import * as api from "./api";
 
 class App extends React.Component {
@@ -8,6 +9,8 @@ class App extends React.Component {
     movies: [],
     moviesWillWatch: [],
     sort_by: "popularity.desc",
+    currentPage: 1,
+    total_pages: null,
   };
 
   componentDidMount() {
@@ -15,21 +18,21 @@ class App extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.sort_by !== this.state.sort_by) {
+    if (prevState.sort_by !== this.state.sort_by || prevState.currentPage !== this.state.currentPage) {
       this.getMovies();
     }
   }
 
   getMovies = () => {
     fetch(
-      `${api.API_URL}/discover/movie?api_key=${api.API_KEY_3}&sort_by=${this.state.sort_by}`
+      `${api.API_URL}/discover/movie?api_key=${api.API_KEY_3}&page=${this.state.currentPage}&sort_by=${this.state.sort_by}`
     )
       .then((res) => {
         return res.json();
       })
       .then((data) => {
         console.log(data);
-        this.setState({ movies: data.results });
+        this.setState({ movies: data.results, total_pages: data.total_pages });
       });
   };
 
@@ -52,6 +55,14 @@ class App extends React.Component {
 
   updateSortBy = (value) => {
     this.setState({ sort_by: value });
+  };
+
+  changeCurrentPage = (num) => {
+    this.setState({ currentPage: num });
+  };
+
+  changeToNextPage = (num) => {
+    this.setState({ currentPage: this.state.currentPage + num });
   };
 
   render() {
@@ -80,6 +91,16 @@ class App extends React.Component {
                   </div>
                 );
               })}
+            </div>
+            <div className="row mb-4">
+              <div className="col-12">
+                <Pagination
+                  totalPages={this.state.total_pages}
+                  currentPage={this.state.currentPage}
+                  changeCurrentPage={this.changeCurrentPage}
+                  changeToNextPage={this.changeToNextPage}
+                />
+              </div>
             </div>
           </div>
           <div className="col-3">
