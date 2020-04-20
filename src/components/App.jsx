@@ -54,7 +54,7 @@ class App extends React.Component {
   };
 
   updateSortBy = (value) => {
-    this.setState({ sort_by: value });
+    this.setState({ sort_by: value, currentPage: 1 });
   };
 
   changeCurrentPage = (num) => {
