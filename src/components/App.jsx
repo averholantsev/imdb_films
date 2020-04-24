@@ -2,7 +2,7 @@ import React from "react";
 import MovieItem from "./MovieItem";
 import MovieTabs from "./MovieTabs";
 import Pagination from "./Pagination";
-import * as api from "./api";
+import * as constants from "./api";
 
 class App extends React.Component {
   state = {
@@ -25,7 +25,7 @@ class App extends React.Component {
 
   getMovies = () => {
     fetch(
-      `${api.API_URL}/discover/movie?api_key=${api.API_KEY_3}&page=${this.state.currentPage}&sort_by=${this.state.sort_by}`
+      `${constants.API_URL}/discover/movie?api_key=${constants.API_KEY_3}&page=${this.state.currentPage}&sort_by=${this.state.sort_by}`
     )
       .then((res) => {
         return res.json();

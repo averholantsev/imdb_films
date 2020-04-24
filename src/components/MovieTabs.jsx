@@ -7,12 +7,10 @@ const MovieTabs = (props) => {
     updateSortBy(value);
   };
   const getClassLink = (value) => {
-    let navClasses = classNames("nav-link");
-    if (sort_by === value) {
-      return navClasses += " active"
-    } else return navClasses;
+    return classNames("nav-link", {
+      active: sort_by === value
+    });
   };
-  
 
   return (
     <ul className="tabs nav nav-pills">
