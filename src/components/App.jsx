@@ -53,7 +53,7 @@ class App extends React.Component {
     this.setState({ moviesWillWatch: newMoviesWillWatch });
   };
 
-  updateSortBy = (value) => {
+  changeMovieTab = (value) => {
     this.setState({ sort_by: value, currentPage: 1 });
   };
 
@@ -78,7 +78,7 @@ class App extends React.Component {
               <div className="col-12">
                 <MovieTabs
                   sort_by={this.state.sort_by}
-                  updateSortBy={this.updateSortBy}
+                  changeMovieTab={this.changeMovieTab}
                 />
               </div>
             </div>

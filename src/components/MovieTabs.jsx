@@ -1,43 +1,37 @@
 import React from "react";
 import classNames from "classnames";
 
+const TAB_VALUES = [
+  { key: "popularity.desc", name: "Popularity" },
+  { key: "revenue.desc", name: "Revenue" },
+  { key: "vote_average.desc", name: "Vote average" },
+];
+
 const MovieTabs = (props) => {
-  const { sort_by, updateSortBy } = props;
+  const { sort_by, changeMovieTab } = props;
+  
   const handleClick = (value) => () => {
-    updateSortBy(value);
+    changeMovieTab(value);
   };
+  
   const getClassLink = (value) => {
     return classNames("nav-link", {
-      active: sort_by === value
+      active: sort_by === value,
     });
   };
 
   return (
     <ul className="tabs nav nav-pills">
-      <li className="nav-item">
-        <div
-          className={getClassLink("popularity.desc")}
-          onClick={handleClick("popularity.desc")}
-        >
-          Popularity desc
-        </div>
-      </li>
-      <li className="nav-item">
-        <div
-          className={getClassLink("revenue.desc")}
-          onClick={handleClick("revenue.desc")}
-        >
-          Revenue desc
-        </div>
-      </li>
-      <li className="nav-item">
-        <div
-          className={getClassLink("vote_average.desc")}
-          onClick={handleClick("vote_average.desc")}
-        >
-          Vote average desc
-        </div>
-      </li>
+      {TAB_VALUES.map((tab) => (
+        <li className="nav-item" key={tab.key}>
+          <div
+            className={getClassLink(tab.key)}
+            onClick={handleClick(tab.key)}
+          >
+            {tab.name}
+          </div>
+        </li>
+      ))}
     </ul>
   );
 };
