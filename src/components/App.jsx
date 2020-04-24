@@ -57,12 +57,16 @@ class App extends React.Component {
     this.setState({ sort_by: value, currentPage: 1 });
   };
 
-  changeCurrentPage = (num) => {
-    this.setState({ currentPage: num });
+  updateCurrentPage = (pageNumber) => {
+    this.setState({ currentPage: pageNumber });
   };
 
-  changeToNextPage = (num) => {
-    this.setState({ currentPage: this.state.currentPage + num });
+  onNextPage = () => {
+    this.setState({ currentPage: this.state.currentPage + 1 });
+  };
+  
+  onPrevPage = () => {
+    this.setState({ currentPage: this.state.currentPage - 1 });
   };
 
   render() {
@@ -97,8 +101,9 @@ class App extends React.Component {
                 <Pagination
                   totalPages={this.state.total_pages}
                   currentPage={this.state.currentPage}
-                  changeCurrentPage={this.changeCurrentPage}
-                  changeToNextPage={this.changeToNextPage}
+                  updateCurrentPage={this.updateCurrentPage}
+                  onNextPage={this.onNextPage}
+                  onPrevPage={this.onPrevPage}
                 />
               </div>
             </div>

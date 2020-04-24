@@ -1,130 +1,134 @@
 import React from "react";
 import classNames from "classnames";
 
-const STYLE_BTN_M = { marginRight: "10px" };
+const stylesMarginRight = { marginRight: "10px" };
 
-const ButtonNumber = (props) => {
-  let buttonClasses = classNames("btn");
-  if (props.children === props.currentPage) {
-    buttonClasses += " btn-primary";
-  } else {
-    buttonClasses += " btn-light";
-  }
-  return (
-    <button
-      type="button"
-      className={buttonClasses}
-      onClick={() => props.changeCurrentPage(props.children)}
-      style={STYLE_BTN_M}
-    >
-      {props.children}
-    </button>
+const SHOW_MAX_SPAGES = 5;
+
+const getClassLink = (page, currentPage) => {
+  return classNames(
+    "btn",
+    {
+      "btn-primary": page === currentPage,
+    },
+    {
+      "btn-light": page !== currentPage,
+    }
   );
 };
 
-const ButtonText = (props) => {
-  return (
-    <button
-      type="button"
-      className="btn"
-      style={STYLE_BTN_M}
-      {...props}
-    >
-      {props.children}
-    </button>
-  );
+const getMiddlePages = (currentPage, totalPages) => {
+  let middlePages = [];
+  if (currentPage <= SHOW_MAX_SPAGES && totalPages <= SHOW_MAX_SPAGES) {
+    for (let i = 2; i < totalPages; i++) {
+      middlePages.push(i);
+    }
+    return middlePages;
+  }
+
+  if (currentPage <= 4 && totalPages > SHOW_MAX_SPAGES) {
+    for (let i = 2; i < SHOW_MAX_SPAGES; i++) {
+      middlePages.push(i);
+    }
+    return middlePages;
+  }
+
+  if (
+    currentPage > 4 &&
+    totalPages - currentPage >= 4 &&
+    totalPages > SHOW_MAX_SPAGES
+  ) {
+    for (let i = currentPage; i < currentPage + 3; i++) {
+      middlePages.push(i);
+    }
+    return middlePages;
+  }
+
+  if (
+    currentPage > 4 &&
+    totalPages - currentPage <= 3 &&
+    totalPages > SHOW_MAX_SPAGES
+  ) {
+    for (let i = totalPages - 3; i < totalPages; i++) {
+      middlePages.push(i);
+    }
+
+    return middlePages;
+  }
+
+  return middlePages;
 };
 
 const Pagination = (props) => {
   const {
     currentPage,
     totalPages,
-    changeCurrentPage,
-    changeToNextPage,
+    updateCurrentPage,
+    onNextPage,
+    onPrevPage,
   } = props;
 
-  let middlePages = [];
-  if (currentPage <= 5 && totalPages <= 5) {
-    for (let i = 2; i < totalPages; i++) {
-      middlePages.push(i);
-    }
-  } else if (currentPage <= 4 && totalPages > 5) {
-    for (let i = 2; i < 5; i++) {
-      middlePages.push(i);
-    }
-  } else if (
-    currentPage > 4 &&
-    totalPages - currentPage >= 4 &&
-    totalPages > 5
-  ) {
-    for (let i = currentPage; i < currentPage + 3; i++) {
-      middlePages.push(i);
-    }
-  } else if (
-    currentPage > 4 &&
-    totalPages - currentPage <= 3 &&
-    totalPages > 5
-  ) {
-    for (let i = totalPages - 3; i < totalPages; i++) {
-      middlePages.push(i);
-    }
-  }
+  let middlePages = getMiddlePages(currentPage, totalPages);
 
   return (
     <div>
-      <ButtonText
-        key={"Previous"}
-        onClick={() => changeToNextPage(-1)}
-        disabled={currentPage === 1 ? true : false}
+      <button
+        type="button"
+        className="btn"
+        style={stylesMarginRight}
+        onClick={onPrevPage}
+        disabled={currentPage === 1}
       >
         Previous
-      </ButtonText>
-      <ButtonNumber
-        key={1}
-        currentPage={currentPage}
-        changeCurrentPage={changeCurrentPage}
+      </button>
+      <button
+        type="button"
+        className={getClassLink(1, currentPage)}
+        onClick={() => updateCurrentPage(1)}
+        style={stylesMarginRight}
       >
-        {1}
-      </ButtonNumber>
-      {middlePages.length === 0 ||
-      middlePages[middlePages.length - 1] < 5 ? null : (
-        <span className="btn" style={{ STYLE_BTN_M }}>
+        1
+      </button>
+      {middlePages[middlePages.length - 1] >= SHOW_MAX_SPAGES && ( //7>5 true
+        <span className="btn" style={stylesMarginRight}>
           ...
         </span>
       )}
-      {middlePages.map((num) => (
-        <ButtonNumber
-          key={num}
-          currentPage={currentPage}
-          changeCurrentPage={changeCurrentPage}
+      {middlePages.map((page) => (
+        <button
+          key={page}
+          type="button"
+          className={getClassLink(page, currentPage)}
+          onClick={() => updateCurrentPage(page)}
+          style={stylesMarginRight}
         >
-          {num}
-        </ButtonNumber>
+          {page}
+        </button>
       ))}
-      {middlePages.length === 0 ||
-      totalPages === 5 ||
-      middlePages[middlePages.length - 1] + 1 < 5 ||
-      totalPages - currentPage <= 3 ? null : (
-        <span className="btn" style={{ STYLE_BTN_M }}>
+      {middlePages[0] < totalPages - 3 && (
+        <span className="btn" style={stylesMarginRight}>
           ...
         </span>
       )}
-      {totalPages === 1 ? null : (
-        <ButtonNumber
-          key={totalPages}
-          currentPage={currentPage}
-          changeCurrentPage={changeCurrentPage}
+      {totalPages !== 1 && (
+        <button
+          type="button"
+          className={getClassLink(totalPages, currentPage)}
+          onClick={() => updateCurrentPage(totalPages)}
+          style={stylesMarginRight}
         >
           {totalPages}
-        </ButtonNumber>
+        </button>
       )}
-      <ButtonText
-        key={"Next"}
-        onClick={() => changeToNextPage(+1)}
-        disabled={currentPage === totalPages ? true : false}
+      <button
+        type="button"
+        className="btn"
+        style={stylesMarginRight}
+        onClick={onNextPage}
+        disabled={currentPage === totalPages}
       >
         Next
-      </ButtonText>
+      </button>
     </div>
   );
 };
