@@ -89,7 +89,7 @@ const Pagination = (props) => {
       >
         1
       </button>
-      {middlePages[middlePages.length - 1] >= SHOW_MAX_SPAGES && ( //7>5 true
+      {middlePages[middlePages.length - 1] >= SHOW_MAX_SPAGES && (
         <span className="btn" style={stylesMarginRight}>
           ...
         </span>
